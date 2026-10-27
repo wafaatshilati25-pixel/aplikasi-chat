@@ -1,0 +1,340 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root {
+    --brown: #3E2C22;
+    --olive: #B7BB88;
+    --cream: #EDDFC4;
+    --paper: #FFFDF8;
+    --muted: #8B806F;
+    --line: #DCCDB2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--cream);
+    color: var(--brown);
+    font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.app {
+    width: 100%;
+    max-width: 480px;
+    height: min(760px, 92vh);
+    min-height: 440px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--paper);
+    border: 1px solid #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 18px 55px #3E2C2218;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 22px 23px;
+    background: var(--brown);
+    color: var(--cream);
+}
+
+.brand-icon {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #EDDFC45C;
+    border-radius: 15px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.brand-info {
+    flex: 1;
+}
+
+.brand-info h1 {
+    margin: 0;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 27px;
+    letter-spacing: -1px;
+}
+
+.brand-info h1 span {
+    color: var(--olive);
+}
+
+.brand-info p {
+    margin: 3px 0 0;
+    color: #EDDFC4B8;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+}
+
+.connection {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--cream);
+}
+
+.online-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--olive);
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #F8F1E5;
+    border-bottom: 1px solid var(--line);
+}
+
+.profile-avatar {
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--olive);
+    color: var(--brown);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+}
+
+.profile-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-input label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    color: var(--muted);
+}
+
+.profile-input input {
+    width: 100%;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--brown);
+    font: 600 14px 'DM Sans', sans-serif;
+}
+
+.conversation {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--cream);
+}
+
+.date-divider {
+    align-self: center;
+    margin: 17px 0 5px;
+    padding: 6px 12px;
+    border: 1px solid #DCCDB2;
+    border-radius: 20px;
+    color: #8B806F;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+#messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 15px 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Pengaturan Sisi Kanan dan Kiri */
+.message {
+    display: flex;
+    width: 100%;
+    margin: 4px 0;
+}
+
+.message.mine {
+    justify-content: flex-end; /* Milik sendiri di kanan */
+}
+
+.message.theirs {
+    justify-content: flex-start; /* Punya orang lain di kiri */
+}
+
+.bubble {
+    max-width: 75%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    overflow-wrap: anywhere;
+    box-shadow: 0 3px 8px #3E2C220A;
+}
+
+.mine .bubble {
+    background: var(--brown);
+    color: var(--cream);
+    border-bottom-right-radius: 4px;
+}
+
+.theirs .bubble {
+    background: var(--olive);
+    color: var(--brown);
+    border-bottom-left-radius: 4px;
+}
+
+.sender {
+    margin-bottom: 4px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.mine .sender {
+    color: var(--olive);
+}
+
+.theirs .sender {
+    color: var(--brown);
+}
+
+.message-text {
+    white-space: pre-wrap;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.time {
+    margin-top: 4px;
+    text-align: right;
+    font-size: 9px;
+    opacity: 0.7;
+}
+
+.empty-state {
+    position: absolute;
+    top: 43%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    text-align: center;
+    pointer-events: none;
+}
+
+.empty-icon {
+    color: #8B806F;
+    font-family: Georgia, serif;
+    font-size: 42px;
+}
+
+.empty-state h2 {
+    margin: 7px 0;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.empty-state p {
+    margin: 0;
+    color: #8B806F;
+    font-size: 12px;
+}
+
+.composer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 16px;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+}
+
+.composer input {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    padding: 13px 15px;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    outline: none;
+    background: #F8F1E5;
+    color: var(--brown);
+    font: 13px 'DM Sans', sans-serif;
+}
+
+.composer input:focus {
+    border-color: var(--olive);
+}
+
+.composer input::placeholder {
+    color: #998D7B;
+}
+
+.composer button {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 15px;
+    background: var(--brown);
+    color: var(--cream);
+    cursor: pointer;
+    transition: transform 0.15s, opacity 0.15s;
+}
+
+.composer button:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+}
+
+.footer {
+    padding: 0 10px 12px;
+    background: var(--paper);
+    text-align: center;
+    color: #A49A88;
+    font-size: 8px;
+    letter-spacing: 1.6px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 0;
+    }
+    .app {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+        border-radius: 0;
+        border: none;
+    }
+}

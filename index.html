@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talkie — Your Little Chat Space</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+    <main class="app">
+        <header class="topbar">
+            <div class="brand-icon">t.</div>
+            <div class="brand-info">
+                <h1>talkie<span>.</span></h1>
+                <p>your little chat space</p>
+            </div>
+            <div class="connection">
+                <span class="online-dot"></span>
+                <span id="status">Connecting</span>
+            </div>
+        </header>
+
+        <section class="profile">
+            <div class="profile-avatar" id="avatar">T</div>
+            <div class="profile-input">
+                <label for="nama">YOUR NAME</label>
+                <input
+                    id="nama"
+                    type="text"
+                    placeholder="Tulis nama kamu..."
+                    maxlength="30"
+                    autocomplete="nickname"
+                >
+            </div>
+        </section>
+
+        <section class="conversation">
+            <div class="date-divider">
+                <span>LET'S TALK</span>
+            </div>
+
+            <div id="empty-state" class="empty-state">
+                <div class="empty-icon">♡</div>
+                <h2>A little hello?</h2>
+                <p>Mulai obrolanmu di sini.</p>
+            </div>
+
+            <ul id="messages" aria-live="polite"></ul>
+        </section>
+
+        <form id="form" class="composer">
+            <input
+                id="pesan"
+                type="text"
+                placeholder="Tulis sesuatu..."
+                autocomplete="off"
+                maxlength="1000"
+                required
+            >
+            <button type="submit" aria-label="Kirim pesan">
+                <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 2 11 13"></path>
+                    <path d="m22 2-7 20-4-9-9-4Z"></path>
+                </svg>
+            </button>
+        </form>
+
+        <footer class="footer">
+            MADE FOR LITTLE CONVERSATIONS ♡
+        </footer>
+    </main>
+
+    <script>
+        const socket = io();
+
+        const form = document.getElementById("form");
+        const namaInput = document.getElementById("nama");
+        const pesanInput = document.getElementById("pesan");
+        const messages = document.getElementById("messages");
+        const avatar = document.getElementById("avatar");
+        const status = document.getElementById("status");
+        const emptyState = document.getElementById("empty-state");
+
+        namaInput.value = "Guest";
+
+        namaInput.addEventListener("input", function () {
+            const nama = namaInput.value.trim();
+            avatar.textContent = nama ? nama.charAt(0).toUpperCase() : "?";
+        });
+
+        socket.on("connect", function () {
+            status.textContent = "Connected";
+        });
+
+        socket.on("disconnect", function () {
+            status.textContent = "Reconnecting...";
+        });
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const nama = namaInput.value.trim();
+            const pesan = pesanInput.value.trim();
+
+            if (!nama || !pesan) {
+                alert("Isi nama dan pesan terlebih dahulu, ya!");
+                return;
+            }
+
+            socket.emit("chat message", {
+                nama: nama,
+                pesan: pesan
+            });
+
+            pesanInput.value = "";
+            pesanInput.focus();
+        });
+
+        socket.on("chat message", function (data) {
+            emptyState.style.display = "none";
+
+            const item = document.createElement("li");
+            const isMine = data.id === socket.id;
+            item.className = isMine ? "message mine" : "message theirs";
+
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+
+            const sender = document.createElement("div");
+            sender.className = "sender";
+            sender.textContent = data.nama;
+
+            const text = document.createElement("div");
+            text.className = "message-text";
+            text.textContent = data.pesan;
+
+            const time = document.createElement("div");
+            time.className = "time";
+            time.textContent = data.waktu || "";
+
+            bubble.appendChild(sender);
+            bubble.appendChild(text);
+            bubble.appendChild(time);
+            item.appendChild(bubble);
+            messages.appendChild(item);
+
+            messages.scrollTop = messages.scrollHeight;
+        });
+    </script>
+</body>
+</html>
